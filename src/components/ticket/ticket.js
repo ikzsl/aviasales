@@ -1,7 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import uniqueId from 'lodash.uniqueid';
+
+const Heading = styled.h1`
+color: red;
+text-align: center;
+`;
+
+const Item = styled.li`
+padding: 0;
+text-align: center;
+`;
 
 const Ticket = (props) => {
   const {
@@ -20,7 +31,8 @@ const Ticket = (props) => {
   } = props;
 
   return (
-    <li key={uniqueId()}>
+    <Item key={uniqueId()}>
+      <Heading>{price}</Heading>
       <img src={`//pics.avs.io/99/36/${carrier}.png`} alt={`${carrier}`} />
       <br />
       {price}
@@ -47,7 +59,7 @@ const Ticket = (props) => {
       -
       {stops2.length}
       <hr />
-    </li>
+    </Item>
   );
 };
 

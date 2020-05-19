@@ -1,18 +1,16 @@
 import React from 'react';
+import GlobalStyle from '../../theme/globalStyle';
 import logo from './logo.png';
-import './App.scss';
 import Tickets from '../tickets/tickets';
 
-
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
+  <>
+    <GlobalStyle />
+    <header>
+      <img src={logo} alt="logo" />
     </header>
     <Tickets />
-
-
-  </div>
+  </>
 );
 
 export default App;

@@ -2,7 +2,7 @@
   "name": "aviasales",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ikzsl.github.io/timer",
+  "homepage": "https://ikzsl.github.io/aviasales",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -14,7 +14,8 @@
     "react": "^16.13.1",
     "react-audio-player": "^0.13.0",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "babel-plugin-styled-components": "^1.10.7",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",

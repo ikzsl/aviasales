@@ -1,17 +1,26 @@
 import React from 'react';
 import axios from 'axios';
 import uniqueId from 'lodash.uniqueid';
+import styled from 'styled-components';
+
+import Filter from '../filter/filter';
+
 
 import Ticket from '../ticket/ticket';
 
 
 import { cutArray } from '../../utils/utils';
 
+const List = styled.ul`
+padding: 0;
+text-align: center;
+`;
+
 
 class Timer extends React.Component {
   state = {
     searchId: '',
-    tickets: [],
+    // tickets: [],
     stop: false,
     filtered: [],
     noStops: false,
@@ -31,13 +40,12 @@ class Timer extends React.Component {
   }
 
   onTicketsLoad = () => {
-    const { searchId, stop, tickets } = this.state;
+    const { searchId, stop } = this.state;
     axios
       .get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`)
       .then((response) => {
         this.setState({
-          tickets: [...tickets, ...response.data.tickets],
-          filtered: [...tickets, ...response.data.tickets],
+          filtered: [...response.data.tickets],
           stop: response.data.stop,
         });
         if (!stop) {
@@ -62,7 +70,6 @@ class Timer extends React.Component {
   }
 
   onSortByChipest = () => {
-    // filtered.sort((first, second) => first.price - second.price);
     this.setState((prevState) => ({
       filtered: prevState.filtered
         .sort((first, second) => first.price - second.price),
@@ -70,33 +77,9 @@ class Timer extends React.Component {
   }
 
 
-  onNoStopsCheck = (evt) => {
+  onFilterCheck = (evt, stops) => {
     this.setState({
-      noStops: evt.target.checked,
-    });
-  }
-
-  onOneStopCheck = (evt) => {
-    this.setState({
-      oneStop: evt.target.checked,
-    });
-  }
-
-  onTwoStopsCheck = (evt) => {
-    this.setState({
-      twoStops: evt.target.checked,
-    });
-  }
-
-  onThreeStopsCheck = (evt) => {
-    this.setState({
-      threeStops: evt.target.checked,
-    });
-  }
-
-  onAllStopsCheck = (evt) => {
-    this.setState({
-      allStops: evt.target.checked,
+      [stops]: evt.target.checked,
     });
   }
 
@@ -108,10 +91,10 @@ class Timer extends React.Component {
 
     const ticketsFiltered = filtered
       .filter((ticket) => allStops
-      || (threeStops === true && ticket.segments[0].stops.length === 3)
-      || (twoStops === true && ticket.segments[0].stops.length === 2)
-      || (oneStop === true && ticket.segments[0].stops.length === 1)
-      || (noStops === true && ticket.segments[0].stops.length === 0));
+      || (threeStops && ticket.segments[0].stops.length === 3)
+      || (twoStops && ticket.segments[0].stops.length === 2)
+      || (oneStop && ticket.segments[0].stops.length === 1)
+      || (noStops && ticket.segments[0].stops.length === 0));
 
     const ticketsFilteredCutted = cutArray(ticketsFiltered, 5);
 
@@ -136,49 +119,24 @@ class Timer extends React.Component {
     ));
 
     return (
-
-
       <div className="timer-container">
+        <Filter
+          allStops={allStops}
+          onFilterCheck={this.onFilterCheck}
+        />
 
-        <label htmlFor="allStops">
-          all
-          <input type="checkbox" checked={allStops} id="allStops" onClick={this.onAllStopsCheck} />
-        </label>
-
-        <label htmlFor="noStops">
-          noStops
-          <input type="checkbox" id="noStops" onClick={this.onNoStopsCheck} />
-        </label>
-
-        <label htmlFor="oneStop">
-          1stop
-          <input type="checkbox" id="oneStop" onClick={this.onOneStopCheck} />
-        </label>
-
-        <label htmlFor="twoStops">
-          2stops
-          <input type="checkbox" id="twoStops" onClick={this.onTwoStopsCheck} />
-        </label>
-
-        <label htmlFor="threeStops">
-          3stops
-          <input type="checkbox" id="threeStops" onClick={this.onThreeStopsCheck} />
-        </label>
-
-        <div className="display">
-          <span>{}</span>
+        <div>
+          <button type="button" onClick={this.onSortByFastest}>
+            SortByFastest
+          </button>
+          <button type="button" onClick={this.onSortByChipest}>
+            SortByChipest
+          </button>
         </div>
-        <button type="button" onClick={this.onSortByFastest}>
-          SortByFastest
-        </button>
-        <button type="button" onClick={this.onSortByChipest}>
-          SortByChipest
-        </button>
 
-
-        <ul>
+        <List>
           {ticketsList}
-        </ul>
+        </List>
       </div>
     );
   }
