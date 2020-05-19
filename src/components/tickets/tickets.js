@@ -30,6 +30,61 @@ text-align: center;
 list-style: none;
 `;
 
+const Loading = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: rgba(0,0,0, 0.3);
+`;
+
+const LoadingInner = styled.div`  
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  position: relative;
+  animation: loader-2 0.9s 0.35s ease alternate infinite;
+  margin: -20px auto 0;
+
+
+&:after,
+&:before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: loader-2 0.9s ease alternate infinite;
+}
+
+&:before {
+  left: -20px;
+  animation-delay: 0.2s;
+}
+
+&:after {
+  right: -20px;
+  animation-delay: 0.5s;
+}
+
+@keyframes loader-2 {
+  0% {
+    box-shadow: 0 15px 0 -15px #ffffff;
+  }
+  100% {
+    box-shadow: 0 15px 0 #ffffff;
+  }
+}
+
+
+`;
+
 
 class Tickets extends React.Component {
   state = {
@@ -64,7 +119,6 @@ class Tickets extends React.Component {
 
         if (!stop) {
           this.setState((prevState) => ({
-            sortByPrice: true,
             filtered: prevState.filtered
               .sort((first, second) => first.price - second.price),
           }));
@@ -107,7 +161,7 @@ class Tickets extends React.Component {
 
   render() {
     const {
-      noStops, oneStop, twoStops, threeStops, allStops, filtered, sortByPrice,
+      noStops, oneStop, twoStops, threeStops, allStops, filtered, sortByPrice, stop,
     } = this.state;
 
     const ticketsFiltered = filtered
@@ -142,8 +196,10 @@ class Tickets extends React.Component {
       />
     ));
 
+
     return (
       <Wrapper>
+
         <Filter
           allStops={allStops}
           onFilterCheck={this.onFilterCheck}
@@ -160,6 +216,7 @@ class Tickets extends React.Component {
           </List>
 
         </Container>
+        { stop ? null : <Loading><LoadingInner /></Loading>}
       </Wrapper>
     );
   }
