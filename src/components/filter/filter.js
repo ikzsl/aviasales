@@ -6,6 +6,8 @@ const Container = styled.div`
 background-color: #ffffff;
 max-width: 230px;
 border-radius: 5px;
+box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+margin-right: 20px;
 `;
 
 const Header = styled.h2`
@@ -23,6 +25,7 @@ color: #4a4a4a;
 const List = styled.ul`
 padding: 0;
 margin: 0;
+padding-bottom: 10px;
 background-color: #ffffff;
 max-width: 230px;
 border-radius: 5px;
@@ -30,21 +33,64 @@ list-style: none;
 `;
 
 const Item = styled.li`
-padding: 10px;
 
-&:hover {
-    cursor: pointer;
-    background-color: #F1FCFF;
-}
 `;
 
 const Label = styled.label`
 display: block;
-&:hover {
-    cursor: pointer;
-    
+position: relative;
+padding: 10px 0;
+padding-left: 50px;
+font-size: 13px;
+line-height: 20px;
+color: #4a4a4a;
 
+&:hover {
+    cursor: pointer;  
+    background-color: #F1FCFF; 
 }
+
+&::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 20px;
+    top: 10px;    
+    border: 1px solid #9abbce;
+    border-radius: 2px;
+}
+`;
+
+const Checkbox = styled.input`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+
+  &:checked + ${Label} {
+    
+    &::before {    
+        border-color: #2196F3;
+    }
+
+    &::after {    
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    left: 25px;
+    top: 16px;
+    border: 2px solid #2196F3;
+    border-left: none;
+    border-bottom: none;
+    transform: rotate(135deg);
+    }
+  }
 `;
 
 const Filter = (props) => {
@@ -61,38 +107,28 @@ const Filter = (props) => {
 
       <List>
         <Item>
-          <Label htmlFor="allStops">
-            <input type="checkbox" checked={allStops} id="allStops" onChange={(evt) => onFilterCheck(evt, 'allStops')} />
-            all
-          </Label>
+          <Checkbox type="checkbox" checked={allStops} id="allStops" onChange={(evt) => onFilterCheck(evt, 'allStops')} />
+          <Label htmlFor="allStops">Все</Label>
         </Item>
 
         <Item>
-          <Label htmlFor="noStops">
-            <input type="checkbox" id="noStops" onChange={(evt) => onFilterCheck(evt, 'noStops')} />
-            noStops
-          </Label>
+          <Checkbox type="checkbox" id="noStops" onChange={(evt) => onFilterCheck(evt, 'noStops')} />
+          <Label htmlFor="noStops">Без пересадок</Label>
         </Item>
 
         <Item>
-          <Label htmlFor="oneStop">
-            <input type="checkbox" id="oneStop" onChange={(evt) => onFilterCheck(evt, 'oneStop')} />
-            1stop
-          </Label>
+          <Checkbox type="checkbox" id="oneStop" onChange={(evt) => onFilterCheck(evt, 'oneStop')} />
+          <Label htmlFor="oneStop">1 пересадка</Label>
         </Item>
 
         <Item>
-          <Label htmlFor="twoStops">
-            <input type="checkbox" id="twoStops" onChange={(evt) => onFilterCheck(evt, 'twoStops')} />
-            2stops
-          </Label>
+          <Checkbox type="checkbox" id="twoStops" onChange={(evt) => onFilterCheck(evt, 'twoStops')} />
+          <Label htmlFor="twoStops">2 пересадки</Label>
         </Item>
 
         <Item>
-          <Label htmlFor="threeStops">
-            <input type="checkbox" id="threeStops" onChange={(evt) => onFilterCheck(evt, 'threeStops')} />
-            3stops
-          </Label>
+          <Checkbox type="checkbox" id="threeStops" onChange={(evt) => onFilterCheck(evt, 'threeStops')} />
+          <Label htmlFor="threeStops">3 пересадки</Label>
         </Item>
 
       </List>

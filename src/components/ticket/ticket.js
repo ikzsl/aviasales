@@ -4,14 +4,23 @@ import styled from 'styled-components';
 
 import uniqueId from 'lodash.uniqueid';
 
+
 const Heading = styled.h1`
-color: red;
-text-align: center;
+font-weight: 600;
+font-size: 24px;
+line-height: 24px;
+
+display: flex;
+align-items: center;
+color: #2196F3;
 `;
 
 const Item = styled.li`
-padding: 0;
-text-align: center;
+padding: 20px;
+background-color: #ffffff;
+border-radius: 5px;
+box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+margin-bottom: 20px;
 `;
 
 const Ticket = (props) => {
@@ -58,7 +67,6 @@ const Ticket = (props) => {
       {duration2}
       -
       {stops2.length}
-      <hr />
     </Item>
   );
 };

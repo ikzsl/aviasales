@@ -8,15 +8,11 @@ export default createGlobalStyle`
 
   body {
     background-color: #f3f7fa;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', sans-serif;
     font-size: 12px;
     
     }
 
-    h2 {
-    
-    font-size: 16px;
-    }
 
     p {
       font-size: 18px;

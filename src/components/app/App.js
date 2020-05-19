@@ -1,14 +1,22 @@
 import React from 'react';
+import styled from 'styled-components';
 import GlobalStyle from '../../theme/globalStyle';
-import logo from './logo.png';
+import logo from './Logo.png';
 import Tickets from '../tickets/tickets';
+
+
+const Header = styled.img`
+display: flex;
+margin: 40px auto;
+`;
+
 
 const App = () => (
   <>
     <GlobalStyle />
-    <header>
-      <img src={logo} alt="logo" />
-    </header>
+
+    <Header src={logo} alt="logo" />
+
     <Tickets />
   </>
 );

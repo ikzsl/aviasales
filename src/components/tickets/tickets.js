@@ -11,13 +11,30 @@ import Ticket from '../ticket/ticket';
 
 import { cutArray } from '../../utils/utils';
 
-const List = styled.ul`
+const Wrapper = styled.div`
+display: flex;
+align-items: flex-start;
+margin: 0 auto;
+padding: 0 10px;
+max-width: 730px;
+`;
+
+const Container = styled.div`
+display: flex;
+flex-direction: column;
+flex-grow: 1;
 padding: 0;
-text-align: center;
 `;
 
 
-class Timer extends React.Component {
+const List = styled.ul`
+padding: 0;
+text-align: center;
+list-style: none;
+`;
+
+
+class Tickets extends React.Component {
   state = {
     searchId: '',
     // tickets: [],
@@ -119,27 +136,31 @@ class Timer extends React.Component {
     ));
 
     return (
-      <div className="timer-container">
+      <Wrapper>
         <Filter
           allStops={allStops}
           onFilterCheck={this.onFilterCheck}
         />
 
-        <div>
-          <button type="button" onClick={this.onSortByFastest}>
-            SortByFastest
-          </button>
-          <button type="button" onClick={this.onSortByChipest}>
-            SortByChipest
-          </button>
-        </div>
+        <Container>
 
-        <List>
-          {ticketsList}
-        </List>
-      </div>
+          <div>
+            <button type="button" onClick={this.onSortByFastest}>
+              SortByFastest
+            </button>
+            <button type="button" onClick={this.onSortByChipest}>
+              SortByChipest
+            </button>
+          </div>
+
+          <List>
+            {ticketsList}
+          </List>
+
+        </Container>
+      </Wrapper>
     );
   }
 }
 
-export default Timer;
+export default Tickets;
