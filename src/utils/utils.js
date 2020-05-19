@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const cutArray = (arr, numberOfFirstElements) => {
   if (arr.length === 0) {
     return [];
@@ -9,4 +11,7 @@ export const cutArray = (arr, numberOfFirstElements) => {
   return resArray;
 };
 
-export const nulled = () => null;
+export const getSearchId = () => axios.get('https://front-test.beta.aviasales.ru/search')
+  .then((response) => response.data.searchId);
+
+export const getData = (searchId) => axios.get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);

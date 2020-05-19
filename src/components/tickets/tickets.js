@@ -1,15 +1,12 @@
 import React from 'react';
-import axios from 'axios';
 import uniqueId from 'lodash.uniqueid';
 import styled from 'styled-components';
 
 import Filter from '../filter/filter';
-
-
+import Sort from '../sort/sort';
 import Ticket from '../ticket/ticket';
 
-
-import { cutArray } from '../../utils/utils';
+import { cutArray, getSearchId, getData } from '../../utils/utils';
 
 const Wrapper = styled.div`
 display: flex;
@@ -37,7 +34,7 @@ list-style: none;
 class Tickets extends React.Component {
   state = {
     searchId: '',
-    // tickets: [],
+    sortByPrice: true,
     stop: false,
     filtered: [],
     noStops: false,
@@ -47,27 +44,31 @@ class Tickets extends React.Component {
     allStops: true,
   };
 
-  componentDidMount() {
-    axios.get('https://front-test.beta.aviasales.ru/search').then((response) => {
-      this.setState({
-        searchId: response.data.searchId,
-      });
-      this.onTicketsLoad();
+  async componentDidMount() {
+    this.setState({
+      searchId: await getSearchId(),
     });
+    this.onTicketsLoad();
   }
 
   onTicketsLoad = () => {
-    const { searchId, stop } = this.state;
-    axios
-      .get(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`)
+    const { searchId, stop, filtered } = this.state;
+
+    getData(searchId)
       .then((response) => {
         this.setState({
-          filtered: [...response.data.tickets],
+          filtered: [...filtered, ...response.data.tickets],
           stop: response.data.stop,
         });
+
+
         if (!stop) {
+          this.setState((prevState) => ({
+            sortByPrice: true,
+            filtered: prevState.filtered
+              .sort((first, second) => first.price - second.price),
+          }));
           this.onTicketsLoad();
-          this.onSortByChipest();
         }
       })
       .catch(() => {
@@ -78,19 +79,22 @@ class Tickets extends React.Component {
       });
   };
 
-  onSortByFastest = () => {
-    this.setState((prevState) => ({
-      filtered: prevState.filtered
-        .sort((first, second) => (first.segments[0].duration + first.segments[1].duration)
-      - (second.segments[0].duration + second.segments[1].duration)),
-    }));
-  }
 
-  onSortByChipest = () => {
-    this.setState((prevState) => ({
-      filtered: prevState.filtered
-        .sort((first, second) => first.price - second.price),
-    }));
+  onSortChange = (evt) => {
+    if (evt.target.value === 'fastest') {
+      this.setState((prevState) => ({
+        sortByPrice: false,
+        filtered: prevState.filtered
+          .sort((first, second) => (first.segments[0].duration + first.segments[1].duration)
+        - (second.segments[0].duration + second.segments[1].duration)),
+      }));
+    } else {
+      this.setState((prevState) => ({
+        sortByPrice: true,
+        filtered: prevState.filtered
+          .sort((first, second) => first.price - second.price),
+      }));
+    }
   }
 
 
@@ -103,15 +107,18 @@ class Tickets extends React.Component {
 
   render() {
     const {
-      noStops, oneStop, twoStops, threeStops, allStops, filtered,
+      noStops, oneStop, twoStops, threeStops, allStops, filtered, sortByPrice,
     } = this.state;
 
     const ticketsFiltered = filtered
-      .filter((ticket) => allStops
-      || (threeStops && ticket.segments[0].stops.length === 3)
-      || (twoStops && ticket.segments[0].stops.length === 2)
-      || (oneStop && ticket.segments[0].stops.length === 1)
-      || (noStops && ticket.segments[0].stops.length === 0));
+      .filter((ticket) => {
+        const { stops } = ticket.segments[0];
+        return allStops
+      || (threeStops && stops.length === 3)
+      || (twoStops && stops.length === 2)
+      || (oneStop && stops.length === 1)
+      || (noStops && stops.length === 0);
+      });
 
     const ticketsFilteredCutted = cutArray(ticketsFiltered, 5);
 
@@ -143,16 +150,11 @@ class Tickets extends React.Component {
         />
 
         <Container>
+          <Sort
+            sortByPrice={sortByPrice}
+            onSortChange={this.onSortChange}
 
-          <div>
-            <button type="button" onClick={this.onSortByFastest}>
-              SortByFastest
-            </button>
-            <button type="button" onClick={this.onSortByChipest}>
-              SortByChipest
-            </button>
-          </div>
-
+          />
           <List>
             {ticketsList}
           </List>

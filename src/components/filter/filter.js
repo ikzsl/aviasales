@@ -44,10 +44,11 @@ padding-left: 50px;
 font-size: 13px;
 line-height: 20px;
 color: #4a4a4a;
+transition: all 0.3s ease;
 
 &:hover {
     cursor: pointer;  
-    background-color: #F1FCFF; 
+    background-color: #F1FCFF;
 }
 
 &::before {
