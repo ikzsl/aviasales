@@ -10,10 +10,16 @@ import { cutArray, getSearchId, getData } from '../../utils/utils';
 
 const Wrapper = styled.div`
 display: flex;
+
 align-items: flex-start;
 margin: 0 auto;
 padding: 0 10px;
 max-width: 730px;
+
+
+@media (max-width: 768px) {  
+    flex-direction: column;  
+}
 `;
 
 const Container = styled.div`
@@ -21,6 +27,11 @@ display: flex;
 flex-direction: column;
 flex-grow: 1;
 padding: 0;
+
+@media (max-width: 768px) {  
+width: 100%;
+}
+
 `;
 
 

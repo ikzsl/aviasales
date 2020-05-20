@@ -139,29 +139,7 @@ const Ticket = (props) => {
           <img src={`//pics.avs.io/99/36/${carrier}.png`} alt={`${carrier}`} />
         </CarrierLogo>
       </Header>
-
-
       {segmentsList}
-      {/* <br />
-      {origin1}
-      - -
-      {destination1}
-      - -
-      {date1}
-      - -
-      {duration1}
-      - -
-      {stops1.length}
-      <br />
-      {origin2}
-      - -
-      {destination2}
-      - -
-      {date2}
-      - -
-      {duration2}
-      - -
-      {stops2.length} */}
     </Item>
   );
 };

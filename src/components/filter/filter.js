@@ -4,10 +4,16 @@ import styled from 'styled-components';
 
 const Container = styled.div`
 background-color: #ffffff;
-max-width: 230px;
+/* max-width: 230px; */
 border-radius: 5px;
 box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 margin-right: 20px;
+
+@media (max-width: 768px) {  
+width: 100%;
+margin-bottom: 20px;
+}
+
 `;
 
 const Header = styled.p`
@@ -20,7 +26,6 @@ line-height: 12px;
 letter-spacing: 0.5px;
 color: #4a4a4a;
 `;
-
 
 const List = styled.ul`
 padding: 0;
