@@ -26,6 +26,7 @@ padding: 0;
 
 const List = styled.ul`
 padding: 0;
+margin: 0;
 text-align: center;
 list-style: none;
 `;
@@ -182,17 +183,7 @@ class Tickets extends React.Component {
         key={uniqueId()}
         price={ticket.price}
         carrier={ticket.carrier}
-        origin1={ticket.segments[0].origin}
-        origin2={ticket.segments[1].origin}
-        destination1={ticket.segments[0].destination}
-        destination2={ticket.segments[1].destination}
-        date1={ticket.segments[0].date}
-        date2={ticket.segments[1].date}
-        stops1={ticket.segments[0].stops}
-        stops2={ticket.segments[1].stops}
-        duration1={ticket.segments[0].duration}
-        duration2={ticket.segments[1].duration}
-
+        segments={ticket.segments}
       />
     ));
 
@@ -209,7 +200,6 @@ class Tickets extends React.Component {
           <Sort
             sortByPrice={sortByPrice}
             onSortChange={this.onSortChange}
-
           />
           <List>
             {ticketsList}

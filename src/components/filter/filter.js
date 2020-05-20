@@ -10,7 +10,7 @@ box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 margin-right: 20px;
 `;
 
-const Header = styled.h2`
+const Header = styled.p`
 text-transform: uppercase;
 margin: 0;
 padding: 20px;

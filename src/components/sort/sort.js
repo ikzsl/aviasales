@@ -8,6 +8,7 @@ background-color: #ffffff;
 border-radius: 5px;
 overflow: hidden;
 border: 1px solid #DFE5EC;
+margin-bottom: 20px;
 `;
 
 
@@ -15,7 +16,7 @@ const Label = styled.label`
 width: 50%;
 display: block;
 position: relative;
-padding: 10px 0;
+padding: 15px 0;
 color: #4a4a4a;
 font-weight: 600;
 font-size: 12px;

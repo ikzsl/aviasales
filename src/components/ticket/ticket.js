@@ -3,16 +3,27 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import uniqueId from 'lodash.uniqueid';
+import { lightFormat, addMinutes } from 'date-fns';
+
+const Header = styled.div`
+display: flex;
+justify-content: space-between;
+`;
 
 
-const Heading = styled.h1`
+const Price = styled.span`
 font-weight: 600;
 font-size: 24px;
-line-height: 24px;
-
-display: flex;
-align-items: center;
+line-height: 30px;
 color: #2196F3;
+width: 50%;
+text-align: left;
+margin-bottom: 25px;
+`;
+
+const CarrierLogo = styled.div`
+text-align: left;
+width: 30%;
 `;
 
 const Item = styled.li`
@@ -23,50 +34,134 @@ box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 margin-bottom: 20px;
 `;
 
+const Segment = styled.ul`
+list-style: none;
+padding: 0;
+display: flex;
+justify-content: space-between;
+`;
+
+const Column = styled.li`
+display: flex;
+flex-direction: column;
+width: 30%;
+`;
+
+const ColumnHeader = styled.span`
+font-weight: 600;
+font-size: 12px;
+line-height: 18px;
+color: #A0B0B9;
+text-align: left;
+text-transform: uppercase;
+`;
+
+const ColumnData = styled.span`
+font-weight: 600;
+font-size: 14px;
+line-height: 21px;
+color: #4A4A4A;
+margin-bottom: 10px;
+text-align: left;
+
+`;
+
 const Ticket = (props) => {
   const {
     price,
     carrier,
-    origin1,
-    origin2,
-    destination1,
-    destination2,
-    date1,
-    date2,
-    stops1,
-    stops2,
-    duration1,
-    duration2,
+    segments,
   } = props;
+
+  const switchStops = (stops) => {
+    switch (stops) {
+      case 0:
+        return 'Без пересадок';
+
+      case 1:
+        return ' Пересадка';
+
+      default:
+        return ' Пересадки';
+    }
+  };
+
+
+  const segmentsList = segments.map((segment, idx, arr) => (
+    <Segment key={uniqueId()}>
+      <Column>
+        <ColumnHeader>
+          {arr[0].origin}
+          {' '}
+          -
+          {' '}
+          {arr[1].origin}
+        </ColumnHeader>
+        <ColumnData>
+          {lightFormat(new Date(segment.date), 'HH:mm')}
+          {' '}
+          –
+          {' '}
+          {lightFormat(addMinutes(new Date(segment.date), segment.duration), 'HH:mm') }
+        </ColumnData>
+      </Column>
+      <Column>
+        <ColumnHeader>
+          В пути
+        </ColumnHeader>
+        <ColumnData>
+          {Math.floor(segment.duration / 60)}
+          {'ч '}
+          {segment.duration % 60}
+          {'м'}
+
+
+        </ColumnData>
+      </Column>
+      <Column>
+        <ColumnHeader>
+          {segment.stops.length === 0 ? null : segment.stops.length}
+          {switchStops(segment.stops.length)}
+        </ColumnHeader>
+        <ColumnData>{segment.stops.join(', ')}</ColumnData>
+      </Column>
+    </Segment>
+  ));
+
 
   return (
     <Item key={uniqueId()}>
-      <Heading>{price}</Heading>
-      <img src={`//pics.avs.io/99/36/${carrier}.png`} alt={`${carrier}`} />
-      <br />
-      {price}
-      <br />
-      {carrier}
-      <br />
+      <Header>
+        <Price>
+          {`${price.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} Р`}
+        </Price>
+        <CarrierLogo>
+          <img src={`//pics.avs.io/99/36/${carrier}.png`} alt={`${carrier}`} />
+        </CarrierLogo>
+      </Header>
+
+
+      {segmentsList}
+      {/* <br />
       {origin1}
-      -
+      - -
       {destination1}
-      -
+      - -
       {date1}
-      -
+      - -
       {duration1}
-      -
+      - -
       {stops1.length}
       <br />
       {origin2}
-      -
+      - -
       {destination2}
-      -
+      - -
       {date2}
-      -
+      - -
       {duration2}
-      -
-      {stops2.length}
+      - -
+      {stops2.length} */}
     </Item>
   );
 };
@@ -76,20 +171,8 @@ Ticket.propTypes = {
   price: PropTypes.number.isRequired,
   carrier: PropTypes.string.isRequired,
 
-  origin1: PropTypes.string.isRequired,
-  origin2: PropTypes.string.isRequired,
 
-  destination1: PropTypes.string.isRequired,
-  destination2: PropTypes.string.isRequired,
-
-  date1: PropTypes.string.isRequired,
-  date2: PropTypes.string.isRequired,
-
-  duration1: PropTypes.number.isRequired,
-  duration2: PropTypes.number.isRequired,
-
-  stops1: PropTypes.array.isRequired,
-  stops2: PropTypes.array.isRequired,
+  segments: PropTypes.array.isRequired,
 
 };
 
