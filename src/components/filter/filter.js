@@ -35,10 +35,13 @@ background-color: #ffffff;
 max-width: 230px;
 border-radius: 5px;
 list-style: none;
+
+@media (max-width: 768px) { 
+  max-width: 100%; 
+}
 `;
 
 const Item = styled.li`
-
 `;
 
 const Label = styled.label`
@@ -54,6 +57,7 @@ transition: all 0.3s ease;
 &:hover {
     cursor: pointer;  
     background-color: #F1FCFF;
+    
 }
 
 &::before {
