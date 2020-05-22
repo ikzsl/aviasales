@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import uniqueId from 'lodash.uniqueid';
-import { lightFormat, addMinutes } from 'date-fns';
+import { formatPrice, formatDuration, formatInterval } from '../../utils/utils';
+
 import {
   Header,
   Price,
@@ -39,22 +40,11 @@ const Ticket = (props) => {
           -
           {arr[1].origin}
         </ColumnHeader>
-        <ColumnData>
-          {lightFormat(new Date(segment.date), 'HH:mm')}
-          {' '}
-          –
-          {' '}
-          {lightFormat(addMinutes(new Date(segment.date), segment.duration), 'HH:mm')}
-        </ColumnData>
+        <ColumnData>{formatInterval(segment.date, segment.duration)}</ColumnData>
       </Column>
       <Column>
         <ColumnHeader>В пути</ColumnHeader>
-        <ColumnData>
-          {Math.floor(segment.duration / 60)}
-          {'ч '}
-          {segment.duration % 60}
-          {'м'}
-        </ColumnData>
+        <ColumnData>{formatDuration(segment.duration)}</ColumnData>
       </Column>
       <Column>
         <ColumnHeader>
@@ -69,7 +59,7 @@ const Ticket = (props) => {
   return (
     <Item>
       <Header>
-        <Price>{`${price.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} Р`}</Price>
+        <Price>{formatPrice(price)}</Price>
         <CarrierLogo>
           <img src={`//pics.avs.io/99/36/${carrier}.png`} alt={`${carrier}`} />
         </CarrierLogo>

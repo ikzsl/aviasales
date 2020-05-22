@@ -5,7 +5,7 @@ import Filter from '../filter/filter';
 import Sort from '../sort/sort';
 import Ticket from '../ticket/ticket';
 
-import cutArray from '../../utils/utils';
+import { cutArray } from '../../utils/utils';
 import { getSearchId, getData } from '../../data/data';
 
 import {
@@ -37,8 +37,9 @@ class Tickets extends React.Component {
 
     getData(searchId)
       .then((response) => {
+        const ticketsById = response.data.tickets.map((ticket) => ({ ...ticket, id: uniqueId() }));
         this.setState({
-          filtered: [...filtered, ...response.data.tickets],
+          filtered: [...filtered, ...ticketsById],
           stop: response.data.stop,
         });
 
@@ -108,7 +109,7 @@ class Tickets extends React.Component {
 
     const ticketsList = ticketsFilteredCutted.map((ticket) => (
       <Ticket
-        key={uniqueId()}
+        key={ticket.id}
         price={ticket.price}
         carrier={ticket.carrier}
         segments={ticket.segments}
