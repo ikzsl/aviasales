@@ -18,10 +18,10 @@ class Tickets extends React.Component {
     sortByPrice: true,
     stop: false,
     filtered: [],
-    noStops: false,
-    oneStop: false,
-    twoStops: false,
-    threeStops: false,
+    noStops: true,
+    oneStop: true,
+    twoStops: true,
+    threeStops: true,
     allStops: true,
   };
 
@@ -77,9 +77,20 @@ class Tickets extends React.Component {
   };
 
   onFilterCheck = (evt, stops) => {
-    this.setState({
-      [stops]: evt.target.checked,
-    });
+    if (stops === 'allStops') {
+      this.setState((prevState) => ({
+        noStops: !prevState.allStops,
+        oneStop: !prevState.allStops,
+        twoStops: !prevState.allStops,
+        threeStops: !prevState.allStops,
+        allStops: !prevState.allStops,
+      }));
+    } else {
+      this.setState((prevState) => ({
+        [stops]: !prevState[stops],
+        allStops: false,
+      }));
+    }
   };
 
   render() {
@@ -118,7 +129,14 @@ class Tickets extends React.Component {
 
     return (
       <Wrapper>
-        <Filter allStops={allStops} onFilterCheck={this.onFilterCheck} />
+        <Filter
+          allStops={allStops}
+          noStops={noStops}
+          oneStop={oneStop}
+          twoStops={twoStops}
+          threeStops={threeStops}
+          onFilterCheck={this.onFilterCheck}
+        />
 
         <Container>
           <Sort sortByPrice={sortByPrice} onSortChange={this.onSortChange} />
