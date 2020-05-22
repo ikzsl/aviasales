@@ -8,56 +8,27 @@ import {
 const Filter = (props) => {
   const { allStops, onFilterCheck } = props;
 
+  const item = (id, label, checked) => (
+    <Item>
+      <Checkbox
+        type="checkbox"
+        checked={checked}
+        id={id}
+        onChange={(evt) => onFilterCheck(evt, id)}
+      />
+      <Label htmlFor={id}>{label}</Label>
+    </Item>
+  );
+
   return (
     <Container>
       <Header>Количество пересадок</Header>
-
       <List>
-        <Item>
-          <Checkbox
-            type="checkbox"
-            checked={allStops}
-            id="allStops"
-            onChange={(evt) => onFilterCheck(evt, 'allStops')}
-          />
-          <Label htmlFor="allStops">Все</Label>
-        </Item>
-
-        <Item>
-          <Checkbox
-            type="checkbox"
-            id="noStops"
-            onChange={(evt) => onFilterCheck(evt, 'noStops')}
-          />
-          <Label htmlFor="noStops">Без пересадок</Label>
-        </Item>
-
-        <Item>
-          <Checkbox
-            type="checkbox"
-            id="oneStop"
-            onChange={(evt) => onFilterCheck(evt, 'oneStop')}
-          />
-          <Label htmlFor="oneStop">1 пересадка</Label>
-        </Item>
-
-        <Item>
-          <Checkbox
-            type="checkbox"
-            id="twoStops"
-            onChange={(evt) => onFilterCheck(evt, 'twoStops')}
-          />
-          <Label htmlFor="twoStops">2 пересадки</Label>
-        </Item>
-
-        <Item>
-          <Checkbox
-            type="checkbox"
-            id="threeStops"
-            onChange={(evt) => onFilterCheck(evt, 'threeStops')}
-          />
-          <Label htmlFor="threeStops">3 пересадки</Label>
-        </Item>
+        {item('allStops', 'Все', allStops)}
+        {item('noStops', 'Без пересадок')}
+        {item('oneStop', '1 пересадка')}
+        {item('twoStops', '2 пересадки')}
+        {item('threeStops', '3 пересадки')}
       </List>
     </Container>
   );

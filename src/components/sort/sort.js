@@ -5,25 +5,24 @@ import { Container, Label, Radio } from './style';
 const Sort = (props) => {
   const { sortByPrice, onSortChange } = props;
 
+  const SortButton = (value, id, label, checked) => (
+    <>
+      <Radio
+        checked={checked}
+        value={value}
+        id={id}
+        name="sort"
+        type="radio"
+        onChange={(evt) => onSortChange(evt)}
+      />
+      <Label htmlFor={id}>{label}</Label>
+    </>
+  );
+
   return (
     <Container>
-      <Radio
-        checked={sortByPrice}
-        value="chipest"
-        id="chipestChoice"
-        name="sort"
-        type="radio"
-        onChange={(evt) => onSortChange(evt)}
-      />
-      <Label htmlFor="chipestChoice">Самый дешевый</Label>
-      <Radio
-        value="fastest"
-        id="fastestChoice"
-        name="sort"
-        type="radio"
-        onChange={(evt) => onSortChange(evt)}
-      />
-      <Label htmlFor="fastestChoice">Самый быстрый</Label>
+      {SortButton('chipest', 'chipestChoice', 'Самый дешевый', sortByPrice)}
+      {SortButton('fastest', 'fastestChoice', 'Самый быстрый')}
     </Container>
   );
 };
