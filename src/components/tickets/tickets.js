@@ -14,48 +14,48 @@ import {
 
 class Tickets extends React.Component {
   state = {
-    searchId: '',
-    sortByPrice: true,
-    stop: false,
     filtered: [],
     noStops: true,
     oneStop: true,
     twoStops: true,
     threeStops: true,
     allStops: true,
+    loading: true,
   };
 
-  async componentDidMount() {
-    this.setState({
-      searchId: await getSearchId(),
-    });
-    this.onTicketsLoad();
+  componentDidMount() {
+    this.onPageLoad();
   }
 
-  onTicketsLoad = () => {
-    const { searchId, stop, filtered } = this.state;
+  onPageLoad = async () => {
+    const searchId = await getSearchId();
+    await this.onTicketsLoad(searchId);
+  };
 
-    getData(searchId)
-      .then((response) => {
-        const ticketsById = response.data.tickets.map((ticket) => ({ ...ticket, id: uniqueId() }));
-        this.setState({
-          filtered: [...filtered, ...ticketsById],
-          stop: response.data.stop,
-        });
+  onTicketsLoad = async (searchId) => {
+    const { filtered } = this.state;
+    let stop;
+    try {
+      const response = await getData(searchId);
 
-        if (!stop) {
-          this.setState((prevState) => ({
-            filtered: prevState.filtered.sort((first, second) => first.price - second.price),
-          }));
-          this.onTicketsLoad();
-        }
-      })
-      .catch(() => {
-        // console.log('error', error);
-        if (!stop) {
-          this.onTicketsLoad();
-        }
+      const ticketsById = response.data.tickets.map((ticket) => ({ ...ticket, id: uniqueId() }));
+      stop = response.data.stop;
+      this.setState({
+        filtered: [...filtered, ...ticketsById],
       });
+
+      if (!stop) {
+        await this.onTicketsLoad(searchId);
+      } else {
+        this.setState({
+          loading: false,
+        });
+      }
+    } catch (error) {
+      if (!stop) {
+        await this.onTicketsLoad(searchId);
+      }
+    }
   };
 
   onSortChange = (evt) => {
@@ -102,18 +102,13 @@ class Tickets extends React.Component {
       allStops,
       filtered,
       sortByPrice,
-      stop,
+      loading,
     } = this.state;
 
+    const checkedStops = [noStops, oneStop, twoStops, threeStops];
     const ticketsFiltered = filtered.filter((ticket) => {
       const { stops } = ticket.segments[0];
-      return (
-        allStops
-        || (threeStops && stops.length === 3)
-        || (twoStops && stops.length === 2)
-        || (oneStop && stops.length === 1)
-        || (noStops && stops.length === 0)
-      );
+      return checkedStops[stops.length];
     });
 
     const ticketsFilteredCutted = cutArray(ticketsFiltered, 5);
@@ -142,11 +137,11 @@ class Tickets extends React.Component {
           <Sort sortByPrice={sortByPrice} onSortChange={this.onSortChange} />
           <List>{ticketsList}</List>
         </Container>
-        {stop ? null : (
+        {loading ? (
           <Loading>
             <LoadingInner />
           </Loading>
-        )}
+        ) : null}
       </Wrapper>
     );
   }
