@@ -20,7 +20,13 @@ class Tickets extends React.Component {
     twoStops: true,
     threeStops: true,
     allStops: true,
-    loading: true,
+    stops: {
+      noStops: true,
+      oneStop: true,
+      twoStops: true,
+      threeStops: true,
+      allStops: true,
+    },
   };
 
   componentDidMount() {
@@ -88,21 +94,47 @@ class Tickets extends React.Component {
     } else {
       this.setState((prevState) => ({
         [stops]: !prevState[stops],
-        allStops: false,
       }));
+
+      const { state } = this;
+
+      const {
+        noStops, oneStop, twoStops, threeStops,
+      } = state;
+
+      const previousCheckBoxesStatus = {
+        noStops,
+        oneStop,
+        twoStops,
+        threeStops,
+      };
+      const currentCheckBoxesStatus = {
+        ...previousCheckBoxesStatus,
+        [stops]: !state[stops],
+      };
+
+      const predicateAllChecked = !Object.values(currentCheckBoxesStatus).includes(false);
+
+      if (predicateAllChecked) {
+        this.setState({
+          allStops: true,
+        });
+      } else {
+        this.setState({
+          allStops: false,
+        });
+      }
     }
+
+    // this.setState((prevState) => ({
+    //   [stops]: !prevState[stops],
+    //   allStops: (noStops && oneStop && twoStops && threeStops),
+    // }));
   };
 
   render() {
     const {
-      noStops,
-      oneStop,
-      twoStops,
-      threeStops,
-      allStops,
-      filtered,
-      sortByPrice,
-      loading,
+      noStops, oneStop, twoStops, threeStops, allStops, filtered, sortByPrice,
     } = this.state;
 
     const checkedStops = [noStops, oneStop, twoStops, threeStops];
@@ -137,7 +169,7 @@ class Tickets extends React.Component {
           <Sort sortByPrice={sortByPrice} onSortChange={this.onSortChange} />
           <List>{ticketsList}</List>
         </Container>
-        {loading ? (
+        {filtered.length === 0 ? (
           <Loading>
             <LoadingInner />
           </Loading>
