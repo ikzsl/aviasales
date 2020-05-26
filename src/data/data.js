@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const url = 'https://front-test.beta.aviasales.ru';
+axios.defaults.baseURL = 'https://front-test.beta.aviasales.ru';
 
-export const getSearchId = () => axios.get(`${url}/search`).then((response) => response.data.searchId);
-
-export const getData = (searchId) => axios.get(`${url}/tickets?searchId=${searchId}`);
+export const getSearchId = () => axios.get('/search').then((response) => response.data.searchId);
+export const getData = (searchId) => axios.get(`/tickets?searchId=${searchId}`);
