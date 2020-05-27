@@ -147,7 +147,8 @@ class Tickets extends React.Component {
 
     const ticketsList = ticketsFilteredCutted.map((ticket) => (
       <Ticket
-        key={ticket.id}
+        id={+ticket.id}
+        key={+ticket.id}
         price={ticket.price}
         carrier={ticket.carrier}
         segments={ticket.segments}

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import uniqueId from 'lodash.uniqueid';
 import { formatPrice, formatDuration, formatInterval } from '../../utils/utils';
 
 import {
@@ -16,7 +15,11 @@ import {
 } from './style';
 
 const Ticket = (props) => {
-  const { price, carrier, segments } = props;
+  const {
+    price, carrier, segments, id,
+  } = props;
+
+  // console.log(price, carrier, segments, id);
 
   const switchStops = (stops) => {
     switch (stops) {
@@ -32,7 +35,7 @@ const Ticket = (props) => {
   };
 
   const segmentsList = segments.map((segment, idx, arr) => (
-    <Segment key={uniqueId()}>
+    <Segment key={`${id + idx}`}>
       <Column>
         <ColumnHeader>
           {arr[0].origin}
@@ -72,6 +75,7 @@ const Ticket = (props) => {
 Ticket.propTypes = {
   price: PropTypes.number.isRequired,
   carrier: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 
   // eslint-disable-next-line react/forbid-prop-types
   segments: PropTypes.array.isRequired,
