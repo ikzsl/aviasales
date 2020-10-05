@@ -1,4 +1,12 @@
-In the project directory, you can run:
+## Типичная для фронтэнда задача - вывод информации с сортировкой и фильтрацией.
+
+
+- Axios 
+- Styled Components
+- date-fns
+
+
+
 
 ### `npm start`
 
